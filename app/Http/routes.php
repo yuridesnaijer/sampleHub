@@ -16,9 +16,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'api/v1/'], function () {
-    Route::get('sampleTest', function ()    {
+    Route::get('sampleTest', function ()
+    {
+        $response = [];
         $arr = array('id' => 1, 'name' => 'newnewnew.wav', 'url' => 'https://stud.hosted.hr.nl/0882153/jaar3/samples/SNARE3.WAV');
 
-        return json_encode($arr);
+        $response[] = $arr;
+
+        return json_encode($response);
     });
 });
