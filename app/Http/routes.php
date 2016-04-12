@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'api/v1/'], function () {
     Route::get('sampleTest', function ()    {
-        $arr = array('id' => 1, 'name' => 'snare3', 'url' => 'samples/SNARE3.WAV');
+        $arr = array('id' => 1, 'name' => 'newnewnew.wav', 'url' => 'https://stud.hosted.hr.nl/0882153/jaar3/samples/SNARE3.WAV');
 
         return json_encode($arr);
     });
