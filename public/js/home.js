@@ -13,6 +13,7 @@ function searchVideo (e) {
     playerElement.innerHTML = '';
     console.log(player);
     player.loadVideoByid(input);
+
 }
 
 // 2. This code loads the IFrame Player API code asynchronously.
