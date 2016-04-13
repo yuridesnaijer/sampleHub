@@ -12,6 +12,9 @@
 */
 
 Route::get('/', function () {
+
+    
+
     return view('home');
 });
 
@@ -19,9 +22,8 @@ Route::group(['prefix' => 'api/v1/'], function () {
     Route::get('sampleTest', function ()
     {
         $response = [];
-        $arr = array('id' => 1, 'name' => 'newnewnew.wav', 'url' => 'https://stud.hosted.hr.nl/0882153/jaar3/samples/SNARE3.WAV');
-
-        $response[] = $arr;
+        $response[] = array('id' => 1, 'name' => 'goldensample.mp3', 'url' => 'https://stud.hosted.hr.nl/0883848/jaar3/samples/goldensample.mp3');
+        $response[] = array('id' => 2, 'name' => 'workitoutsample.mp3', 'url' => 'https://stud.hosted.hr.nl/0883848/jaar3/samples/workitoutsample.mp3');
 
         return json_encode($response);
     });
