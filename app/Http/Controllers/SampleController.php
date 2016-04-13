@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sample;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+
+use GuzzleHttp\Client;
 
 class SampleController extends Controller
 {
@@ -15,7 +18,8 @@ class SampleController extends Controller
      */
     public function index()
     {
-        return 'hoi';
+        $samples = Sample::all();
+        return view('sample.index')->with("samples", $samples);
     }
 
     /**
@@ -25,7 +29,7 @@ class SampleController extends Controller
      */
     public function create()
     {
-        //
+        return view('sample.create');
     }
 
     /**
@@ -36,7 +40,23 @@ class SampleController extends Controller
      */
     public function store(Request $request)
     {
-        return 'post';
+        $sample = new Sample();
+        $sample->name = $request->get("name");
+
+        $link = $request->get("youtube_url");
+        $video_id = explode("?v=", $link);
+        $video_id = $video_id[1];
+
+        $tmpArray = explode("&", $video_id);
+        $video_id = $tmpArray[0];
+
+        $sample->youtube_url = $video_id;
+        $sample->start = $request->get("start");
+        $sample->end = $request->get("end");
+
+        $sample->save();
+
+        return redirect()->intended("sample");
     }
 
     /**
@@ -47,7 +67,7 @@ class SampleController extends Controller
      */
     public function show($id)
     {
-        //
+        return "HOI";
     }
 
     /**

@@ -11,20 +11,81 @@
 |
 */
 
+use Illuminate\Support\Facades\URL;
+
 Route::get('/', function () {
-    return view('home');
+    return redirect()->route('sample.index');
+//    return view('home');
 });
 
+Route::resource('sample', 'SampleController');
+
 Route::group(['prefix' => 'api/v1/'], function () {
-    Route::resource('sample', 'SampleController');
     Route::get('sampleTest', function ()
     {
+        $samples = \App\Models\Sample::where("pulled", "=", 0)->get();
+
         $response = [];
-        $response[] = array('id' => 1, 'name' => 'goldensample.mp3', 'url' => 'https://stud.hosted.hr.nl/0883848/jaar3/samples/goldensample.mp3');
-        $response[] = array('id' => 2, 'name' => 'workitoutsample.mp3', 'url' => 'https://stud.hosted.hr.nl/0883848/jaar3/samples/workitoutsample.mp3');
+        foreach($samples as $sample){
+//            $url = 'www.youtubeinmp3.com/fetch/?video='.$sample->youtube_url."&start=".$sample->start."&end=".$sample->end;
+            $url = 'www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v='.$sample->youtube_url."&start=".$sample->start."&end=".$sample->end;
+
+//            $url = 'www.youtubeinmp3.com/fetch/?format=JSON&video=http://www.youtube.com/watch?v='.$sample->youtube_url."&start=".$sample->start."&end=".$sample->end;
+
+//            $res = $client->request('GET', $url);
+//            $result = $res->getBody();
+//            $decodeStr = json_decode($result);
+//            $getLink = $decodeStr->link;
+
+
+            $client = new GuzzleHttp\Client();
+
+            $newFile = public_path()."\\samples\\".$sample->name;
+
+            $resource = fopen($newFile, 'w');
+            $stream = GuzzleHttp\Psr7\stream_for($resource);
+            $client->request('GET', $url, ['save_to' => $stream]);
+            fclose($resource);
+
+            //ensure file doesn't contain html (BUG)
+            $contentNewFile = file_get_contents($newFile);
+
+            if(preg_match("<html>",$contentNewFile,$m) != 0){
+                unlink($newFile);
+
+                $resource = fopen($newFile, 'w');
+                $stream = GuzzleHttp\Psr7\stream_for($resource);
+                $client->request('GET', $url, ['save_to' => $stream]);
+                fclose($resource);
+
+                $contentNewFile = file_get_contents($newFile);
+
+                if(preg_match("<html>",$contentNewFile,$m) != 0){
+                    unlink($newFile);
+
+                    $resource = fopen($newFile, 'w');
+                    $stream = GuzzleHttp\Psr7\stream_for($resource);
+                    $client->request('GET', $url, ['save_to' => $stream]);
+                    fclose($resource);
+
+                    $contentNewFile = file_get_contents($newFile);
+
+                    if(preg_match("<html>",$contentNewFile,$m) != 0){
+                        unlink($newFile);
+
+                        $resource = fopen($newFile, 'w');
+                        $stream = GuzzleHttp\Psr7\stream_for($resource);
+                        $client->request('GET', $url, ['save_to' => $stream]);
+                        fclose($resource);
+                        unlink($newFile);
+                    }
+                }
+            }
+
+            $sample->url = URL::to('/')."\\samples\\".$sample->name;
+            $response[] = $sample;
+        }
 
         return json_encode($response);
     });
-
-    Route::resource('sample', 'SampleController');
 });
