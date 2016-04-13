@@ -12,13 +12,11 @@
 */
 
 Route::get('/', function () {
-
-    
-
     return view('home');
 });
 
 Route::group(['prefix' => 'api/v1/'], function () {
+    Route::resource('sample', 'SampleController');
     Route::get('sampleTest', function ()
     {
         $response = [];
@@ -27,4 +25,6 @@ Route::group(['prefix' => 'api/v1/'], function () {
 
         return json_encode($response);
     });
+
+    Route::resource('sample', 'SampleController');
 });

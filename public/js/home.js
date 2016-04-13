@@ -8,11 +8,12 @@ button.addEventListener('click', searchVideo);
 
 function searchVideo (e) {
     var input = document.getElementById('youtubeSearchField').value;
-    console.log(input);
 
-    var player = document.getElementById('player');
+    var playerElement = document.getElementById('player');
+    playerElement.innerHTML = '';
+    console.log(player);
+    player.loadVideoByid(input);
 
-    player.videoId = input;
 }
 
 // 2. This code loads the IFrame Player API code asynchronously.
