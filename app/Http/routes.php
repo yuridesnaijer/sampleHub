@@ -23,11 +23,9 @@ Route::resource('sample', 'SampleController');
 
 Route::group(['prefix' => 'api/v1/'], function () {
 
-    Route::get('addSample', function() {
-        $yo = Input::all();
-        print_r($yo);
-        //TODO data sample to db.
-
+    Route::get('addSample', function(\Illuminate\Http\Request $request) {
+        $sampleController = new \App\Http\Controllers\SampleController();
+        $sampleController->store($request);
     });
 
     Route::get('sampleTest', function ()
@@ -91,7 +89,7 @@ Route::group(['prefix' => 'api/v1/'], function () {
                 }
             }
 
-            $sample->url = URL::to('/')."\\samples\\".$sample->name;
+            $sample->url = URL::to('/')."/samples/".$sample->name;
             $response[] = $sample;
         }
 
