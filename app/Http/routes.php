@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 
 Route::get('/', function () {
@@ -21,6 +22,14 @@ Route::get('/', function () {
 Route::resource('sample', 'SampleController');
 
 Route::group(['prefix' => 'api/v1/'], function () {
+
+    Route::get('addSample', function() {
+        $yo = Input::all();
+        print_r($yo);
+        //TODO data sample to db.
+
+    });
+
     Route::get('sampleTest', function ()
     {
         $samples = \App\Models\Sample::where("pulled", "=", 0)->get();
