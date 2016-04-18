@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Sample;
 use Illuminate\Http\Request;
 
@@ -40,6 +41,9 @@ class SampleController extends Controller
      */
     public function store(Request $request)
     {
+        $project = Project::find(1);
+
+        //create samples and link to project
         $sample = new Sample();
         $sample->name = $request->get("name");
 
@@ -55,6 +59,8 @@ class SampleController extends Controller
         $sample->end = $request->get("end");
 
         $sample->save();
+
+        $project->samples()->save($sample);
 
         return redirect()->intended("sample");
     }

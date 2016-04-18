@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\Project;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 
@@ -30,7 +31,8 @@ Route::group(['prefix' => 'api/v1/'], function () {
 
     Route::get('sampleTest', function ()
     {
-        $samples = \App\Models\Sample::where("pulled", "=", 0)->get();
+        $project = Project::find(1);
+        $samples = $project->samples()->where("pulled", "=", 0)->get();
 
         $response = [];
         foreach($samples as $sample){
@@ -42,7 +44,7 @@ Route::group(['prefix' => 'api/v1/'], function () {
 
             $resource = fopen($newFile, 'w');
             $stream = GuzzleHttp\Psr7\stream_for($resource);
-            $client->request('GET', $url, ['save_to' => $stream]);
+            $client->request('GET', $gurl, ['save_to' => $stream]);
             fclose($resource);
 
             //ensure file doesn't contain html (BUG)
