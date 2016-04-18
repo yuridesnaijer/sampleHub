@@ -44,7 +44,7 @@ Route::group(['prefix' => 'api/v1/'], function () {
 
             $resource = fopen($newFile, 'w');
             $stream = GuzzleHttp\Psr7\stream_for($resource);
-            $client->request('GET', $gurl, ['save_to' => $stream]);
+            $client->request('GET', $url, ['save_to' => $stream]);
             fclose($resource);
 
             //ensure file doesn't contain html (BUG)
