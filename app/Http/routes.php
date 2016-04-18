@@ -91,6 +91,10 @@ Route::group(['prefix' => 'api/v1/'], function () {
 
             $sample->url = URL::to('/')."/samples/".$sample->name;
             $response[] = $sample;
+
+            $tmp_sample = \App\Models\Sample::find($sample->id);
+            $tmp_sample->pulled = 1;
+            $tmp_sample->save();
         }
 
         return json_encode($response);
