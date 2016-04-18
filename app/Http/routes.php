@@ -34,16 +34,7 @@ Route::group(['prefix' => 'api/v1/'], function () {
 
         $response = [];
         foreach($samples as $sample){
-//            $url = 'www.youtubeinmp3.com/fetch/?video='.$sample->youtube_url."&start=".$sample->start."&end=".$sample->end;
             $url = 'www.youtubeinmp3.com/fetch/?video=http://www.youtube.com/watch?v='.$sample->youtube_url."&start=".$sample->start."&end=".$sample->end;
-
-//            $url = 'www.youtubeinmp3.com/fetch/?format=JSON&video=http://www.youtube.com/watch?v='.$sample->youtube_url."&start=".$sample->start."&end=".$sample->end;
-
-//            $res = $client->request('GET', $url);
-//            $result = $res->getBody();
-//            $decodeStr = json_decode($result);
-//            $getLink = $decodeStr->link;
-
 
             $client = new GuzzleHttp\Client();
 
